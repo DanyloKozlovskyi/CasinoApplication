@@ -16,7 +16,6 @@ namespace Casino.Services
 
 		public UsersService(IUsersRepository _usersRepository)
 		{
-			// dbContext = db;
 			usersRepository = _usersRepository;
 
 			var map = new MapperConfiguration
