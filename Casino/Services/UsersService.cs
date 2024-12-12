@@ -2,19 +2,22 @@
 using Casino.DataAccess.Dtos;
 using Casino.DataAccess.MenuVoting.DataAccess;
 using Casino.DataAccess.Models;
+using Casino.DataAccess.Repository;
 using Casino.Util;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging.Core;
 
 namespace Casino.Services
 {
 	public class UsersService : IUsersService
 	{
-		private readonly CasinoDbContext dbContext;
+		private readonly IUsersRepository usersRepository;
 		private readonly IMapper mapper;
 
-		public UsersService(CasinoDbContext db)
+		public UsersService(IUsersRepository _usersRepository)
 		{
-			dbContext = db;
+			// dbContext = db;
+			usersRepository = _usersRepository;
 
 			var map = new MapperConfiguration
 			(
@@ -28,56 +31,39 @@ namespace Casino.Services
 				throw new ArgumentNullException(nameof(UserCreate));
 
 			User user = mapper.Map<User>(userCreate);
-			await dbContext.AddAsync(user);
-			await dbContext.SaveChangesAsync();
+			await usersRepository.AddUser(user);
 			return user;
 		}
 
-		public async Task<bool> DeleteUser(Guid? id)
+		public async Task DeleteUser(Guid id)
 		{
-			if (id == null)
-				throw new ArgumentNullException(nameof(id));
+			bool checkExist = await usersRepository.UserExists(id);
+			if (!checkExist)
+				throw new ArgumentException($"User with Id = {id} doesn't exist in the system.");
 
-			User? user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
-			if (user == null)
-				return false;
-
-			dbContext.Users.Remove(user);
-			await dbContext.SaveChangesAsync();
-
-			return true;
+			await usersRepository.DeleteUser(id);
 		}
 
-		public async Task<User?> GetUserById(Guid? id)
+		public async Task<User?> GetUserById(Guid id)
 		{
-			if (id == null)
-				throw new ArgumentNullException(nameof(id));
-
-			return await dbContext.Users.FirstOrDefaultAsync(c => c.Id == id);
+			return await usersRepository.GetUserById(id);
 		}
 
 		public async Task<ICollection<User>> GetUsers()
 		{
-			return await dbContext.Users.ToListAsync();
+			return await usersRepository.GetUsers();
 		}
 
 		public async Task<User> UpdateUser(User user)
 		{
-			User? matchingUser = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+			bool checkExist = await usersRepository.UserExists(user.Id);
 
-			if (matchingUser == null)
+			if (!checkExist)
 				throw new ArgumentNullException(nameof(user));
 
-			matchingUser = mapper.Map<User>(user);
-
-			await dbContext.SaveChangesAsync();
+			await usersRepository.UpdateUser(user);
 
 			return user;
-		}
-
-		public async Task<bool> UserExists(Guid id)
-		{
-			return await dbContext.Users.AnyAsync(x => x.Id == id);
 		}
 	}
 }

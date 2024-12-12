@@ -8,9 +8,8 @@ namespace Casino.Services
 	{
 		Task<User> AddUser(UserCreate? userCreate);
 		Task<ICollection<User>> GetUsers();
-		Task<User?> GetUserById(Guid? id);
+		Task<User?> GetUserById(Guid id);
 		Task<User> UpdateUser(User user);
-		Task<bool> DeleteUser(Guid? id);
-		Task<bool> UserExists(Guid id);
+		Task DeleteUser(Guid id);
 	}
 }
