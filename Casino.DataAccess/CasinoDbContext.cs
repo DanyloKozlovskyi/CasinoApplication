@@ -14,7 +14,7 @@ namespace Casino.DataAccess
 	{
 		public class CasinoDbContext : DbContext
 		{
-			public DbSet<User> Menus { get; set; }
+			public DbSet<User> Users { get; set; }
 
 			public CasinoDbContext(DbContextOptions options) : base(options)
 			{
