@@ -17,8 +17,16 @@ namespace Casino.Tests.Generators
             .RuleFor(x => x.Email, f => f.Internet.Email())
             .RuleFor(x => x.PhoneNumber, f => f.Phone.PhoneNumber());
 
+        private static readonly Faker<UserCreate> invalidFaker = new Faker<UserCreate>()
+            .RuleFor(x => x.FirstName, f => "")
+            .RuleFor(x => x.LastName, f => "")
+            .RuleFor(x => x.Email, f => f.Internet.Email())
+            .RuleFor(x => x.PhoneNumber, f => f.Phone.PhoneNumber());
+
         public static UserCreate Generate() => faker.Generate();
 
         public static List<UserCreate> Generate(int count) => faker.Generate(count);
+
+        public static UserCreate GenerateWithErrors() => invalidFaker.Generate();
     }
 }

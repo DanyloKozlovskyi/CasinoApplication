@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Casino.DataAccess.Models;
+using Microsoft.Identity.Client.Extensions.Msal;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -63,5 +63,95 @@ namespace Casino.Tests.Services
                 }
             );
         }
+
+        [Test]
+        public async Task AddUser_WhenValidUser_ShouldReturnSameUser()
+        {
+            // Arrange
+            UserCreate userCreate = UserCreateGenerator.Generate();
+
+            // Act 
+            User user = await usersService.AddUser(userCreate);
+
+            // Assert
+            user.FirstName.Should().Be(userCreate.FirstName);
+            user.LastName.Should().Be(userCreate.LastName);
+            user.Email.Should().Be(userCreate.Email);
+            user.PhoneNumber.Should().Be(userCreate.PhoneNumber);
+        }
+
+        [Test]
+        public async Task DeleteUser_WhenIdNonExistent_ShouldThrowArgumentException()
+        {
+            // Arrange 
+            Guid nonExistentId = Guid.NewGuid();
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(
+                async () =>
+                {
+                    await usersService.DeleteUser(nonExistentId);
+                }
+            );
+        }
+
+        [Test]
+        public async Task GetUserById_WhenIdNonExistent_ShouldReturnNull()
+        {
+            // Arrange 
+            Guid nonExistentId = Guid.NewGuid();
+            mockUsersRepository.Setup(m => m.GetUserById(nonExistentId)).ReturnsAsync(null as User);
+
+            // Act
+            User? user = await usersService.GetUserById(nonExistentId);
+
+            // Assert
+            user.Should().BeNull();
+        }
+
+        [Test]
+        public async Task GetUserById_WhenIdExistent_ShouldReturnUser()
+        {
+            // Arrange 
+            User expectedUser = UsersGenerator.Generate();
+            Guid existentId = expectedUser.Id;
+            mockUsersRepository.Setup(m => m.GetUserById(existentId)).ReturnsAsync(expectedUser);
+
+            // Act
+            User? actualUser = await usersService.GetUserById(existentId);
+
+            // Assert
+            expectedUser.Should().Be(actualUser);
+        }
+
+        [Test]
+        public async Task UpdateUser_WhenUserDoesntExist_ShouldThrowArgumentException()
+        {
+            // Arrange 
+            User user = UsersGenerator.Generate();
+
+            // Assert
+            Assert.ThrowsAsync<ArgumentException>(
+                async () =>
+                {
+                    await usersService.UpdateUser(user);
+                }
+            );
+        }
+
+        [Test]
+        public async Task UpdateUser_WhenUserExists_ShouldThrowArgumentException()
+        {
+            // Arrange 
+            User expectedUser = UsersGenerator.Generate();
+            mockUsersRepository.Setup(m => m.UserExists(expectedUser.Id)).ReturnsAsync(true);
+            mockUsersRepository.Setup(m => m.UpdateUser(expectedUser)).ReturnsAsync(expectedUser);
+
+            // Act
+            var actualUser = await usersService.UpdateUser(expectedUser);
+
+            // Assert
+            actualUser.Should().Be(expectedUser);
+        }
     }
 }
