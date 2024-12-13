@@ -369,3 +369,30 @@ a.link-hover:hover {
             width: auto;
         }
 }
+
+
+.paginat {
+    margin: 20px 0;
+    text-align: center;
+}
+
+    .paginat a {
+        margin: 0 5px;
+        padding: 5px 10px;
+        text-decoration: none;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+        .paginat a:hover {
+            background-color: #f0f0f0;
+        }
+
+    .paginat span {
+        margin: 0 5px;
+        padding: 5px 10px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #007bff;
+        border-radius: 5px;
+    }

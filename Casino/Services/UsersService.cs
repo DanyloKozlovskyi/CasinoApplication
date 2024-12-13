@@ -64,5 +64,16 @@ namespace Casino.Services
 
             return modifiedUser;
         }
+
+        public async Task<ICollection<User>> GetPage(int page, int pageSize)
+        {
+            return await usersRepository.GetPage(page, pageSize);
+        }
+
+        public async Task<int> CountUsers()
+        {
+            return await usersRepository.CountUsers();
+        }
+
     }
 }

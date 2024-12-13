@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 
 namespace Casino.DataAccess.Repository
 {
-	public interface IUsersRepository
-	{
-		Task<User> AddUser(User user);
-		Task<ICollection<User>> GetUsers();
-		Task<User?> GetUserById(Guid id);
-		Task<User> UpdateUser(User user);
-		Task DeleteUser(Guid id);
-		Task<bool> UserExists(Guid id);
-	}
+    public interface IUsersRepository
+    {
+        Task<User> AddUser(User user);
+        Task<ICollection<User>> GetUsers();
+        Task<User?> GetUserById(Guid id);
+        Task<User> UpdateUser(User user);
+        Task DeleteUser(Guid id);
+        Task<bool> UserExists(Guid id);
+        Task<ICollection<User>> GetPage(int page, int pageSize);
+        Task<int> CountUsers();
+    }
 }

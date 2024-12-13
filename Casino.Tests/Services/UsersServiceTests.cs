@@ -153,5 +153,48 @@ namespace Casino.Tests.Services
             // Assert
             actualUser.Should().Be(expectedUser);
         }
+
+        [Test]
+        public async Task GetPage_ShouldReturnUsers()
+        {
+            // Arrange 
+            int countUsers = 10;
+            int maxPageSize = 4;
+            var allUsers = UsersGenerator.Generate(countUsers);
+
+            Random random = new Random();
+            int pageSize = random.Next(1, maxPageSize);
+            int page = random.Next(1, int.MaxValue) % (int)Math.Ceiling(((double)countUsers / pageSize));
+
+            ICollection<User> expectedPage = allUsers.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            mockUsersRepository.Setup(m => m.GetPage(page, pageSize)).ReturnsAsync(expectedPage);
+
+            // Act
+            var actualPage = await usersService.GetPage(page, pageSize);
+
+            // Assert
+            actualPage.Should().BeEquivalentTo(expectedPage);
+        }
+
+        [Test]
+        public async Task GetPage_WhenNoUsersExist_ShouldReturnNull()
+        {
+            // Act
+            var actualPage = await usersService.GetPage(1, 10);
+
+            // Assert
+            actualPage.Should().BeNull();
+        }
+
+        [Test]
+        public async Task CountUsers_WhenNoUsersExist_ShouldReturnInt()
+        {
+            // Act
+            var actualCountUsers = await usersService.CountUsers();
+
+            // Assert
+            actualCountUsers.Should().Be(0);
+        }
     }
 }

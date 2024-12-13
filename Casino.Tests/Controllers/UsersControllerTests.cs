@@ -41,10 +41,10 @@ namespace Casino.Tests.Controllers
         {
             //Arrange
             var users = UsersGenerator.Generate(10);
-            mockUsersService.Setup(m => m.GetUsers()).ReturnsAsync(users);
+            mockUsersService.Setup(m => m.GetPage(1, 10)).ReturnsAsync(users);
 
             //Act
-            IActionResult result = await usersController.Index();
+            IActionResult result = await usersController.Index(1, 10);
 
             //Assert
             var viewResult = (ViewResult)result;
@@ -72,7 +72,7 @@ namespace Casino.Tests.Controllers
         public async Task Create_WhenModelInvalid_ShouldReturnCreateView()
         {
             // Arrange
-            var userCreate = UserCreateGenerator.GenerateWithErrors();
+            var userCreate = UserCreateGenerator.Generate();
             usersController.ModelState.AddModelError("FirstName", "First Name can't be blank");
 
             // Act
