@@ -19,9 +19,9 @@ namespace Casino.Controllers
 
         [Route("[action]")]
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var users = usersService.GetUsers();
+            var users = await usersService.GetUsers();
             return View(users);
         }
 
@@ -40,7 +40,7 @@ namespace Casino.Controllers
             {
                 ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).
                     Select(e => e.ErrorMessage).ToList();
-                return View("Create", "Users");
+                return View(userCreate);
             }
             User user = await usersService.AddUser(userCreate);
 
