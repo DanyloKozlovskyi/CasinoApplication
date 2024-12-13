@@ -25,7 +25,7 @@ namespace Casino.DataAccess.Models.Configurations
                 new User() { Id = Guid.Parse("D7E63A43-A93B-42ED-AA8F-727C75E53CDA"), FirstName = "Andrew", LastName = "Bock", Email = "bock@gmail.com", PhoneNumber = "0987654321" },
                 new User() { Id = Guid.Parse("D46DEFD8-526B-4D86-B903-412F59673B2D"), FirstName = "George", LastName = "Bluementhal", Email = "bluementhal@gmail.com", PhoneNumber = "1234567890" },
                 new User() { Id = Guid.Parse("95DA71D2-830B-4DA6-8C35-55A96AA2487E"), FirstName = "Marry", LastName = "Smith", Email = "smithm@gmail.com", PhoneNumber = "0987654321" },
-                new User() { Id = Guid.Parse("8558B449-4562-4234-A78F-2996681BFF6A"), FirstName = "Rudolf", LastName = "Hampspring", Email = "rudhampspring@gmail.com", PhoneNumber = "1234567890" },
+                new User() { Id = Guid.Parse("8558B449-4562-4234-A78F-2996681BFF6A"), FirstName = "Rudolf", LastName = "Hampspring", Email = "rudhampspring@gmail.com", PhoneNumber = "1234567890" }
                 );
         }
     }
